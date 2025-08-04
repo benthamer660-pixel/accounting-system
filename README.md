@@ -352,3 +352,5 @@ Special thanks to all contributors and developers who helped build this system.
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/your-username/accounting-system)
 
 </div>
+#   a c c o u n t i n g - s y s t e m  
+ 
