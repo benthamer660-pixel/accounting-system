@@ -4,7 +4,15 @@
   "description": "نظام محاسبي متكامل مبني باستخدام Next.js و TypeScript لإدارة شاملة للأعمال التجارية",
   "author": "Accounting System Team",
   "license": "MIT",
-  "keywords": ["accounting", "invoicing", "inventory", "business", "nextjs", "typescript", "arabic"],
+  "keywords": [
+    "accounting",
+    "invoicing",
+    "inventory",
+    "business",
+    "nextjs",
+    "typescript",
+    "arabic"
+  ],
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -45,6 +53,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/raf": "^3.4.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "cross-env": "^7.0.3",
