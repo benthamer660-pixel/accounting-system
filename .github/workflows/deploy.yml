@@ -1,0 +1,185 @@
+# نظام المحاسبة - GitHub Actions للنشر التلقائي
+# Accounting System - GitHub Actions for Automatic Deployment
+
+name: 🚀 Deploy Accounting System
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  # فحص الكود والاختبارات
+  test:
+    name: 🧪 Test & Lint
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📋 Install dependencies
+      run: npm ci
+      
+    - name: 🔍 Run ESLint
+      run: npm run lint
+      
+    - name: 🔧 Type check
+      run: npm run type-check
+      
+    - name: 🏗️ Build test
+      run: npm run build
+
+  # نشر على Vercel
+  deploy-vercel:
+    name: 🌐 Deploy to Vercel
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📋 Install dependencies
+      run: npm ci
+      
+    - name: 🏗️ Build application
+      run: npm run build
+      env:
+        NEXT_PUBLIC_APP_NAME: "نظام المحاسبة"
+        NEXT_PUBLIC_DEFAULT_LANGUAGE: "ar"
+        NEXT_PUBLIC_DEFAULT_CURRENCY: "ريال"
+        NEXT_PUBLIC_DEFAULT_CURRENCY_SYMBOL: "ر.س"
+        NEXT_PUBLIC_DEFAULT_TAX_RATE: "15"
+        
+    - name: 🚀 Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
+
+  # نشر على Netlify
+  deploy-netlify:
+    name: 🌊 Deploy to Netlify
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: 📋 Install dependencies
+      run: npm ci
+      
+    - name: 🏗️ Build for static export
+      run: npm run build:static
+      env:
+        NEXT_PUBLIC_APP_NAME: "نظام المحاسبة"
+        NEXT_PUBLIC_DEFAULT_LANGUAGE: "ar"
+        NEXT_PUBLIC_DEFAULT_CURRENCY: "ريال"
+        NEXT_PUBLIC_DEFAULT_CURRENCY_SYMBOL: "ر.س"
+        NEXT_PUBLIC_DEFAULT_TAX_RATE: "15"
+        
+    - name: 🚀 Deploy to Netlify
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: './out'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+        enable-pull-request-comment: false
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  # بناء Docker Image
+  build-docker:
+    name: 🐳 Build Docker Image
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: 🔑 Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: 🏗️ Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/accounting-system:latest
+          ${{ secrets.DOCKER_USERNAME }}/accounting-system:${{ github.sha }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # إشعارات النجاح
+  notify-success:
+    name: 📢 Notify Success
+    needs: [deploy-vercel, deploy-netlify, build-docker]
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+    - name: 🎉 Success notification
+      run: |
+        echo "✅ تم نشر نظام المحاسبة بنجاح!"
+        echo "✅ Accounting System deployed successfully!"
+        echo "🌐 Vercel: https://accounting-system.vercel.app"
+        echo "🌊 Netlify: https://accounting-system.netlify.app"
+        echo "🐳 Docker: docker pull ${{ secrets.DOCKER_USERNAME }}/accounting-system:latest"
+
+  # إشعارات الفشل
+  notify-failure:
+    name: ❌ Notify Failure
+    needs: [deploy-vercel, deploy-netlify, build-docker]
+    runs-on: ubuntu-latest
+    if: failure()
+    
+    steps:
+    - name: ❌ Failure notification
+      run: |
+        echo "❌ فشل في نشر نظام المحاسبة!"
+        echo "❌ Accounting System deployment failed!"
+        echo "🔍 تحقق من السجلات للمزيد من التفاصيل"
+        echo "🔍 Check logs for more details"

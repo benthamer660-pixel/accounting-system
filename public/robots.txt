@@ -1,0 +1,65 @@
+# نظام المحاسبة - ملف Robots.txt
+# Accounting System - Robots.txt
+
+User-agent: *
+Allow: /
+
+# الصفحات المسموحة للفهرسة
+# Allowed pages for indexing
+Allow: /dashboard
+Allow: /products
+Allow: /customers
+Allow: /invoices
+Allow: /inventory
+Allow: /expenses
+Allow: /reports
+Allow: /settings
+
+# الصفحات المحظورة من الفهرسة
+# Disallowed pages from indexing
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /temp/
+Disallow: /backup/
+
+# ملفات خاصة
+# Special files
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.log$
+Disallow: /*.env$
+
+# خريطة الموقع
+# Sitemap
+Sitemap: https://your-domain.com/sitemap.xml
+
+# معدل الزحف (اختياري)
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# وكلاء محددة
+# Specific user agents
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# منع الوكلاء الضارة
+# Block malicious bots
+User-agent: BadBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /

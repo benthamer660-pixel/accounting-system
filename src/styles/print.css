@@ -1,0 +1,278 @@
+/* أنماط الطباعة للفواتير */
+
+@media print {
+  /* إعدادات عامة للطباعة */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #000 !important;
+    background: white !important;
+  }
+
+  /* إخفاء العناصر غير المطلوبة */
+  .no-print,
+  button,
+  .btn,
+  nav,
+  .navbar,
+  .sidebar,
+  .modal-backdrop,
+  .modal-header button,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* تنسيق الصفحة */
+  @page {
+    size: A4;
+    margin: 1cm;
+  }
+
+  /* تنسيق الفاتورة */
+  .print-invoice {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+    font-size: 11px !important;
+  }
+
+  /* العناوين */
+  .print-invoice h1 {
+    font-size: 20px !important;
+    color: #000 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .print-invoice h2 {
+    font-size: 14px !important;
+    color: #000 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .print-invoice h3 {
+    font-size: 12px !important;
+    color: #000 !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* الجداول */
+  .print-invoice table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-bottom: 15px !important;
+    font-size: 10px !important;
+  }
+
+  .print-invoice th,
+  .print-invoice td {
+    border: 1px solid #000 !important;
+    padding: 6px 4px !important;
+    text-align: right !important;
+  }
+
+  .print-invoice th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+  }
+
+  /* الخلفيات */
+  .print-invoice .bg-gray-50,
+  .print-invoice .bg-gray-100,
+  .print-invoice .bg-blue-50,
+  .print-invoice .bg-green-50,
+  .print-invoice .bg-yellow-50 {
+    background-color: #f8f8f8 !important;
+    color: #000 !important;
+  }
+
+  /* الحدود */
+  .print-invoice .border,
+  .print-invoice .border-gray-200,
+  .print-invoice .border-gray-300,
+  .print-invoice .border-blue-200,
+  .print-invoice .border-green-200,
+  .print-invoice .border-yellow-200 {
+    border-color: #ccc !important;
+  }
+
+  .print-invoice .border-t,
+  .print-invoice .border-b {
+    border-color: #000 !important;
+  }
+
+  /* النصوص الملونة */
+  .print-invoice .text-blue-600,
+  .print-invoice .text-green-600,
+  .print-invoice .text-red-600,
+  .print-invoice .text-yellow-600,
+  .print-invoice .text-purple-600 {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  /* الأيقونات - إخفاؤها في الطباعة */
+  .print-invoice svg,
+  .print-invoice .icon {
+    display: none !important;
+  }
+
+  /* تنسيق الشبكة */
+  .print-invoice .grid {
+    display: block !important;
+  }
+
+  .print-invoice .grid > div {
+    display: block !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* المسافات */
+  .print-invoice .mb-8,
+  .print-invoice .mb-6,
+  .print-invoice .mb-4 {
+    margin-bottom: 15px !important;
+  }
+
+  .print-invoice .mt-8,
+  .print-invoice .mt-6,
+  .print-invoice .mt-4 {
+    margin-top: 15px !important;
+  }
+
+  .print-invoice .p-6,
+  .print-invoice .p-4 {
+    padding: 10px !important;
+  }
+
+  /* تنسيق خاص للملخص المالي */
+  .print-invoice .financial-summary {
+    border: 2px solid #000 !important;
+    padding: 10px !important;
+    margin-top: 20px !important;
+  }
+
+  /* تنسيق رأس الشركة */
+  .print-invoice .company-header {
+    text-align: center !important;
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 15px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* تنسيق معلومات الفاتورة والعميل */
+  .print-invoice .invoice-info,
+  .print-invoice .customer-info {
+    margin-bottom: 20px !important;
+  }
+
+  /* تنسيق الملاحظات */
+  .print-invoice .notes {
+    border: 1px solid #ccc !important;
+    padding: 8px !important;
+    margin: 15px 0 !important;
+    background-color: #f9f9f9 !important;
+  }
+
+  /* تنسيق التذييل */
+  .print-invoice .footer {
+    border-top: 1px solid #000 !important;
+    padding-top: 15px !important;
+    margin-top: 30px !important;
+    text-align: center !important;
+    font-size: 9px !important;
+  }
+
+  /* منع كسر الصفحة داخل العناصر المهمة */
+  .print-invoice .no-break {
+    page-break-inside: avoid !important;
+  }
+
+  .print-invoice table {
+    page-break-inside: auto !important;
+  }
+
+  .print-invoice tr {
+    page-break-inside: avoid !important;
+    page-break-after: auto !important;
+  }
+
+  /* تنسيق الأرقام */
+  .print-invoice .currency {
+    font-family: 'Courier New', monospace !important;
+    font-weight: bold !important;
+  }
+
+  /* تنسيق التواريخ */
+  .print-invoice .date {
+    font-family: 'Arial', sans-serif !important;
+  }
+
+  /* تنسيق حالة الفاتورة */
+  .print-invoice .status {
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+  }
+
+  /* تنسيق خاص للعناوين الفرعية */
+  .print-invoice .section-title {
+    background-color: #e0e0e0 !important;
+    padding: 5px !important;
+    margin: 10px 0 5px 0 !important;
+    font-weight: bold !important;
+    border: 1px solid #000 !important;
+  }
+
+  /* تنسيق الخطوط */
+  .print-invoice .font-bold {
+    font-weight: bold !important;
+  }
+
+  .print-invoice .font-medium {
+    font-weight: 500 !important;
+  }
+
+  /* تنسيق المحاذاة */
+  .print-invoice .text-center {
+    text-align: center !important;
+  }
+
+  .print-invoice .text-right {
+    text-align: right !important;
+  }
+
+  .print-invoice .text-left {
+    text-align: left !important;
+  }
+
+  /* تنسيق خاص للأرقام في الجداول */
+  .print-invoice table .number-cell {
+    text-align: center !important;
+    font-family: 'Courier New', monospace !important;
+  }
+
+  /* تنسيق خاص للمجاميع */
+  .print-invoice .total-row {
+    font-weight: bold !important;
+    background-color: #f0f0f0 !important;
+    border-top: 2px solid #000 !important;
+  }
+
+  /* إزالة الظلال والتأثيرات */
+  .print-invoice * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-radius: 0 !important;
+  }
+}

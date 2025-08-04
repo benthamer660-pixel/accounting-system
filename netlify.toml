@@ -1,0 +1,106 @@
+# نظام المحاسبة - تكوين Netlify
+# Accounting System - Netlify Configuration
+
+[build]
+  # أمر البناء
+  command = "npm run build && npm run export"
+  
+  # مجلد النشر
+  publish = "out"
+  
+  # متغيرات البيئة
+  environment = { NODE_VERSION = "18", NEXT_TELEMETRY_DISABLED = "1" }
+
+[build.processing]
+  # تحسين الصور
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# إعادة التوجيه
+[[redirects]]
+  from = "/"
+  to = "/dashboard"
+  status = 302
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# إعادة كتابة للتطبيقات أحادية الصفحة
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# رؤوس الأمان
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# رؤوس التخزين المؤقت للملفات الثابتة
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# إعدادات النماذج (للمستقبل)
+# [forms]
+#   settings = true
+
+# إعدادات الوظائف
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# متغيرات البيئة
+[context.production.environment]
+  NEXT_PUBLIC_APP_NAME = "نظام المحاسبة"
+  NEXT_PUBLIC_APP_VERSION = "1.0.0"
+  NEXT_PUBLIC_DEFAULT_LANGUAGE = "ar"
+  NEXT_PUBLIC_DEFAULT_CURRENCY = "ريال"
+  NEXT_PUBLIC_DEFAULT_CURRENCY_SYMBOL = "ر.س"
+  NEXT_PUBLIC_DEFAULT_TAX_RATE = "15"
+  NODE_ENV = "production"
+
+[context.deploy-preview.environment]
+  NEXT_PUBLIC_APP_NAME = "نظام المحاسبة - معاينة"
+  NODE_ENV = "development"
+
+[context.branch-deploy.environment]
+  NEXT_PUBLIC_APP_NAME = "نظام المحاسبة - تطوير"
+  NODE_ENV = "development"
